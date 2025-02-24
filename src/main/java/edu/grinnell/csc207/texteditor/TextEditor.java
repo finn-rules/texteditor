@@ -1,22 +1,94 @@
 package edu.grinnell.csc207.texteditor;
+// At the top of your file...
+
+import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.screen.Screen;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 
 /**
  * The driver for the TextEditor Application.
  */
 public class TextEditor {
+    /**
+     * drawBuffer : creates and updates the buffer, creating a 100*100 panel.
+     * @param buf = a string buffer
+     * @param screen = the screen object
+     * @throws IOException 
+     */
+    public static void drawBuffer(GapBuffer buf, Screen screen) throws IOException {
+        int row = 0;
+        int col = 0;
+        int panelSize = 100;
+        for (int i = 0; i < buf.getSize(); i++) {
+            char ch = buf.getChar(i);
+            row = i % panelSize;
+            col = i / panelSize;
+            TextCharacter text = new TextCharacter(ch);
+            screen.setCharacter(row, col, text);
+        }
+        screen.refresh();
+    }
 
     /**
      * The main entry point for the TextEditor application.
+     *
      * @param args command-line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         if (args.length != 1) {
             System.err.println("Usage: java TextEditor <filename>");
             System.exit(1);
         }
 
         // TODO: fill me in with a text editor TUI!
-        String path = args[0];
-        System.out.format("Loading %s...\n", path);
+        String pathString = args[0];
+        System.out.format("Loading %s...\n", pathString);
+        Path path = Paths.get(pathString); // !!
+
+        GapBuffer b = new GapBuffer();
+        Screen screen = new DefaultTerminalFactory().createScreen();
+        screen.startScreen();
+
+        if (Files.exists(path) && Files.isRegularFile(path)) {
+            String insideFile = Files.readString(path);
+            for (int i = 0; i < insideFile.length(); i++) {
+                b.insert(b.getChar(i));
+            }
+        }
+
+        boolean isRunning = true;
+        while (isRunning) {
+            KeyStroke keyStroke = screen.readInput();
+            KeyType keyType = keyStroke.getKeyType();
+            if (null != keyType) {
+                switch (keyType) {
+                    case Character -> {
+                        char ch = keyStroke.getCharacter();
+                        b.insert(ch);
+                    }
+                    case ArrowLeft ->
+                        b.moveLeft();
+                    case ArrowRight ->
+                        b.moveRight();
+                    case Backspace ->
+                        b.delete();
+                    case Escape ->
+                        isRunning = false;
+                    default -> {
+                    }
+                }
+            }
+            drawBuffer(b, screen);
+        }
+        screen.stopScreen();
+        Files.writeString(path, b.toString());
     }
 }
