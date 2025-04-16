@@ -26,7 +26,7 @@ public class TextEditor {
     public static void drawBuffer(GapBuffer buf, Screen screen) throws IOException {
         int row = 0;
         int col = 0;
-        int panelSize = 100;
+        int panelSize = 75;
         for (int i = 0; i < buf.getSize(); i++) {
             char ch = buf.getChar(i);
             row = i % panelSize;
@@ -59,13 +59,16 @@ public class TextEditor {
 
         if (Files.exists(path) && Files.isRegularFile(path)) {
             String insideFile = Files.readString(path);
-            for (int i = 0; i < insideFile.length(); i++) {
-                b.insert(b.getChar(i));
+            char[] strChars = insideFile.toCharArray();
+            System.out.println(insideFile);
+            for (int i = 0; i < strChars.length; i++) {
+                b.insert(strChars[i]);
             }
         }
 
         boolean isRunning = true;
         while (isRunning) {
+            drawBuffer(b, screen);
             KeyStroke keyStroke = screen.readInput();
             KeyType keyType = keyStroke.getKeyType();
             if (null != keyType) {
@@ -86,7 +89,6 @@ public class TextEditor {
                     }
                 }
             }
-            drawBuffer(b, screen);
         }
         screen.stopScreen();
         Files.writeString(path, b.toString());
