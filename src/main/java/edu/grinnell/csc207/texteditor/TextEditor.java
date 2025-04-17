@@ -1,14 +1,12 @@
 package edu.grinnell.csc207.texteditor;
-// At the top of your file...
 
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.screen.Screen;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
@@ -17,11 +15,13 @@ import com.googlecode.lanterna.input.KeyType;
  * The driver for the TextEditor Application.
  */
 public class TextEditor {
+
     /**
      * drawBuffer : creates and updates the buffer, creating a 100*100 panel.
+     *
      * @param buf = a string buffer
      * @param screen = the screen object
-     * @throws IOException 
+     * @throws IOException
      */
     public static void drawBuffer(GapBuffer buf, Screen screen) throws IOException {
         int row = 0;
@@ -33,6 +33,8 @@ public class TextEditor {
             col = i / panelSize;
             TextCharacter text = new TextCharacter(ch);
             screen.setCharacter(row, col, text);
+            screen.setCursorPosition(new TerminalPosition(buf.gapStart % panelSize,
+                    col));
         }
         screen.refresh();
     }
@@ -41,6 +43,7 @@ public class TextEditor {
      * The main entry point for the TextEditor application.
      *
      * @param args command-line arguments.
+     * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
@@ -48,7 +51,6 @@ public class TextEditor {
             System.exit(1);
         }
 
-        // TODO: fill me in with a text editor TUI!
         String pathString = args[0];
         System.out.format("Loading %s...\n", pathString);
         Path path = Paths.get(pathString); // !!
@@ -60,7 +62,6 @@ public class TextEditor {
         if (Files.exists(path) && Files.isRegularFile(path)) {
             String insideFile = Files.readString(path);
             char[] strChars = insideFile.toCharArray();
-            System.out.println(insideFile);
             for (int i = 0; i < strChars.length; i++) {
                 b.insert(strChars[i]);
             }
@@ -92,5 +93,6 @@ public class TextEditor {
         }
         screen.stopScreen();
         Files.writeString(path, b.toString());
+        System.out.format("File %s saved. \nExiting...\n", pathString);
     }
 }
