@@ -7,9 +7,6 @@ import net.jqwik.api.*;
 import net.jqwik.api.constraints.*;
 
 public class SimpleStringBufferTests {
-    /** TODO: fill me in with unit and property tests! */
-    // Assert: curPos is correct, sz is correct, 
-    // string is same as expected
     @Test
     public void simpleCreationTest() {
         SimpleStringBuffer b = new SimpleStringBuffer();
@@ -83,11 +80,14 @@ public class SimpleStringBufferTests {
         b.insert('a');
         b.insert('b');
         b.insert('c');
+        assertEquals("abc", b.string);
         b.insert('d');
         b.insert('e');
+        assertEquals("abcde", b.string);
         assertEquals(b.getCursorPosition(), 5);
         b.delete();
         assertEquals(4, b.getCursorPosition());
+        assertEquals("abcd", b.string);
         b.moveLeft();
         assertEquals(3, b.getCursorPosition());
         b.delete();
@@ -102,9 +102,11 @@ public class SimpleStringBufferTests {
         for (int i = 0; i < 10; i++) {
             b.insert('X');
         }
+        assertEquals(b.string, "XXXXXXXXXX");
         b.moveLeft();
         b.moveLeft();
         b.moveLeft();
+        assertEquals(b.string, "XXXXXXXXXX");
         b.insert('c');
         b.insert('b');
         b.insert('a');
@@ -135,13 +137,22 @@ public class SimpleStringBufferTests {
     public void getCharTestAndIllegalRights() {
         SimpleStringBuffer b = new SimpleStringBuffer();
         b.insert('z');
+        assertEquals(b.toString(), "z");
         b.moveRight();
+        assertEquals(b.toString(), "z");
         b.insert('y');
+        assertEquals(b.toString(), "zy");
         b.moveRight();
+        assertEquals(b.toString(), "zy");
+        assertEquals(b.getSize(), 2);
         b.insert('x');
         b.moveRight();
+        assertEquals(b.toString(), "zyx");
+        assertEquals(b.getSize(), 3);
         b.insert('w');
         b.moveRight();
+        assertEquals(b.toString(), "zyxw");
+        assertEquals(b.getSize(), 4);
         b.insert('v');
         b.moveRight();
         assertEquals('z', b.getChar(0));
@@ -149,6 +160,7 @@ public class SimpleStringBufferTests {
         assertEquals('x', b.getChar(2));
         assertEquals('w', b.getChar(3));
         assertEquals('v', b.getChar(4));
+        assertEquals(b.toString(), "zyxwv");
     }
     
     @Property
