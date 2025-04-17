@@ -8,9 +8,13 @@ import java.util.Arrays;
 public class GapBuffer {
 
     public int arrSize;
+    
     public int gapStart;
+    
     public int gapEnd;
+    
     int numElements;
+    
     public char[] arr;
 
     /**
@@ -31,18 +35,15 @@ public class GapBuffer {
      */
     public void insert(char ch) {
         if (gapStart >= gapEnd) {
-            System.out.println("Expanding!");
             arrSize *= 2;
             char[] temp = Arrays.copyOf(arr, arrSize);
-            for (int i = gapEnd + arrSize / 2; i < arrSize; i++) { // I'm cautious here.
+            for (int i = gapEnd + arrSize / 2; i < arrSize; i++) {
                 temp[i] = arr[i - arrSize / 2];
             }
             this.arr = temp;
             gapEnd = gapStart + (arrSize / 2);
-            System.out.println("End index: " + gapEnd);
         }
-        System.out.println("Attempting to place. Start index: " + gapStart);
-        arr[gapStart] = ch; // !!
+        arr[gapStart] = ch;
         gapStart++;
         numElements++;
     }
@@ -82,7 +83,7 @@ public class GapBuffer {
      * moveRight: moves the entire gap right
      */
     public void moveRight() {
-        if (gapEnd < arr.length - 1) {
+        if (gapEnd < arr.length) {
             this.arr[gapStart] = this.arr[gapEnd];
             this.gapStart++;
             this.gapEnd++;
@@ -107,7 +108,7 @@ public class GapBuffer {
      */
     public char getChar(int i) throws IndexOutOfBoundsException {
         // note: may not get the correct character due to not considering buffer
-        if (i > arrSize - 1 || i < 0) {
+        if (i > this.numElements - 1 || i < 0) {
             throw new IndexOutOfBoundsException();
         } else if (i < gapStart) {
             return this.arr[i];
@@ -125,7 +126,7 @@ public class GapBuffer {
     public String toString() {
         String s = "";
         int totalStringSize = this.numElements;
-        for (int i = 0; i <= gapStart; i++) {
+        for (int i = 0; i < gapStart; i++) {
             s = s + this.arr[i];
             totalStringSize--;
         }
