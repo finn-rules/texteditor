@@ -1,4 +1,4 @@
-# CSC 207: Text Editor
+# CSC 207: Text Editor REDO
 
 **Author**: Finn Rowles
 
@@ -13,10 +13,19 @@
 + Professor Osera's Wesbite and the lab description.
 + Java version 17.0.14
 + Lanterna and its relevant libraries
++ Owen B and Emily L for UI issues on a high level
 
 
 ## Changelog
 
+REDO FIXES:
+
+---
+Now passes all the autograder tests.
+Project runs and UI is present. 
+The program is also visually correct, with a working cursor. Saves and reads from files.
+No checkstyle violations, and test suite is more comprehensive.
+---
 
 insert Analysis:
 relevant input(s) : char ch, a character to be added
