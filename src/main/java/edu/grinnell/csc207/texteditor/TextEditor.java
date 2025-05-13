@@ -24,6 +24,8 @@ public class TextEditor {
      * @throws IOException
      */
     public static void drawBuffer(GapBuffer buf, Screen screen) throws IOException {
+        screen.clear(); // Added this to address a visual glitch with deleting.
+        
         int row = 0;
         int col = 0;
         int panelSize = 75;
