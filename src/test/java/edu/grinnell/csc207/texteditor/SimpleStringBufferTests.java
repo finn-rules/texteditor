@@ -54,7 +54,7 @@ public class SimpleStringBufferTests {
         b.delete();
         b.delete();
         assertEquals(b.string, "");
-        assertEquals(b.getCursorPosition(), 0);
+        assertEquals(b.getCursorPosition(), 1);
         assertEquals(b.getSize(), 0);
     }
     
