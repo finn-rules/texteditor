@@ -1,4 +1,4 @@
-# CSC 207: Text Editor REDO
+# CSC 207: Text Editor REDO (Actual)
 
 **Author**: Finn Rowles
 
@@ -19,12 +19,16 @@
 ## Changelog
 
 REDO FIXES:
-
+Resubmission Greenlit by Osera
 ---
+5/13 Fix : Fixed the drawbuffer method, clears the screen before entering.
+This makes deletion smooth, because there aren't any "ghost" characters. Osera said he was cool with me submitting w/ this update.
 Now passes all the autograder tests.
 Project runs and UI is present. 
 The program is also visually correct, with a working cursor. Saves and reads from files.
-No checkstyle violations, and test suite is more comprehensive.
+No checkstyle violations, and test suite is more comprehensive. I wrote a few more to test some edge cases.
+Also, tested the autograder test in my testing file. They pass, but for some reason, the autograder is bugged.
+Osera told me to submit this okay.
 ---
 
 insert Analysis:
