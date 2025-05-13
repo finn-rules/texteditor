@@ -53,8 +53,7 @@ public class GapBuffer {
      */
     public void delete() {
         if (gapStart != 0 && arrSize != 0) {
-            arrSize--;
-            gapStart--;
+            gapStart--; // Small deletion bugfix
             numElements--;
         }
     }
